@@ -76,12 +76,20 @@ contract SimpleLottery {
         }
     }
 
+    function setManager(address _manager) public {
+        manager = _manager;
+    }
+
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
     function getPlayers() public view returns (address[] memory) {
         return s_players;
+    }
+
+    function getWinners() public view returns (address[] memory) {
+        return winners;
     }
 
     function random() private view returns (uint256) {
