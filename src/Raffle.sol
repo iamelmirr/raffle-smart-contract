@@ -25,7 +25,7 @@ contract SimpleLottery {
 
 
 
-    constructor () {
+    constructor() {
         manager = msg.sender;
         lotteryId = 1;
     }
@@ -53,7 +53,7 @@ contract SimpleLottery {
     }
 
 
-    function pickWinner () public onlyManager {
+    function pickWinner() public onlyManager {
         if (s_players.length == 0) {
             revert Raffle__NoPlayersEnteredRaffle();
         }
@@ -92,17 +92,17 @@ contract SimpleLottery {
 
 
 
-    function getBalance() public view returns(uint256) {
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
 
-    function getPlayers() public view returns(address[] memory) {
+    function getPlayers() public view returns (address[] memory) {
         return s_players;
     }
 
 
-    function random() private view returns(uint256) {
+    function random() private view returns (uint256) {
         return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, s_players.length)));
     }
 
