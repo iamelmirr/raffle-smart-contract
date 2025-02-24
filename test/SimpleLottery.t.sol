@@ -15,7 +15,6 @@ contract SimpleLotteryTest is Test {
     event PlayerEntered(address indexed player, uint256 amount);
     event WinnerPicked(address indexed winner, uint256 amount, uint256 lotteryId);
 
-
     function setUp() public {
         lottery = new SimpleLottery();
 
@@ -25,17 +24,13 @@ contract SimpleLotteryTest is Test {
         managerPlayer = address(0x4);
 
         lottery.setManager(managerPlayer);
-
-
     }
-
 
     function testOnlyManagerCanPickWinner() public {
         vm.prank(nonManager);
         vm.expectRevert(SimpleLottery.Raffle__OnlyManagerCanStartRaffle.selector);
         lottery.pickWinner();
     }
-
 
     function testEnterLotteryWithSufficientFunds() public {
         vm.deal(player1, 1 ether);
@@ -47,8 +42,6 @@ contract SimpleLotteryTest is Test {
         assertEq(players[0], player1);
     }
 
-
-
     function testEnterLotteryWithInsufficientFunds() public {
         vm.deal(player1, 1 ether);
         vm.prank(player1);
@@ -56,8 +49,6 @@ contract SimpleLotteryTest is Test {
 
         lottery.enterLottery{value: 0.005 ether}();
     }
-
-
 
     function testPickWinner() public {
         vm.deal(player1, 1 ether);
@@ -76,8 +67,6 @@ contract SimpleLotteryTest is Test {
         assertEq(winners.length, 1);
     }
 
-
-
     function testWithdrawFunds() public {
         vm.deal(player1, 1 ether);
         vm.prank(player1);
@@ -94,24 +83,19 @@ contract SimpleLotteryTest is Test {
         assertEq(initialBalance, 0.1 ether);
     }
 
-
     function testWithdrawFundsWithNoBalance() public {
         vm.expectRevert(SimpleLottery.Raffle__WithdrawalFailed.selector);
         vm.prank(managerPlayer);
         lottery.withdrawFunds();
     }
 
-
     function testEnterLotteryViaFallback() public {
-
         vm.deal(player1, 1 ether);
         vm.prank(player1);
         vm.expectEmit(true, true, false, true);
         emit PlayerEntered(player1, 0.01 ether);
 
-        (bool success, ) = address(lottery).call{value: 0.01 ether}("");
+        (bool success,) = address(lottery).call{value: 0.01 ether}("");
         assert(success);
     }
-
-
 }
